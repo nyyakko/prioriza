@@ -1,4 +1,4 @@
-name: deploy do prioriza
+name: build and deploy
 
 on:
   push:
