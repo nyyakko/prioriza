@@ -5,7 +5,7 @@ import type { Categoria } from '../../../Entities/Categoria';
 import type { Empresa } from '../../../Entities/Empresa';
 import type { Pergunta } from '../../../Entities/Pergunta';
 
-export default function IndicadorGovernanca({ empresa, setEmpresa, setSucesso }: {
+export default function Governanca({ empresa, setEmpresa, setSucesso }: {
     empresa: Empresa,
     setEmpresa: React.Dispatch<React.SetStateAction<Empresa>>
     setSucesso: React.Dispatch<React.SetStateAction<boolean>>

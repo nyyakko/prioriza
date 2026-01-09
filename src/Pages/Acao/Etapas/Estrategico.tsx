@@ -4,54 +4,37 @@ import type { Categoria } from '../../../Entities/Categoria';
 import type { Pergunta } from '../../../Entities/Pergunta';
 import type { Empresa } from '../../../Entities/Empresa';
 
-export default function IndicadorSetorial({ empresa, setEmpresa, setSucesso }: {
+export default function Estrategico({ empresa, setEmpresa, setSucesso }: {
     empresa: Empresa,
     setEmpresa: React.Dispatch<React.SetStateAction<Empresa>>
     setSucesso: React.Dispatch<React.SetStateAction<boolean>>
 })
 {
-    useEffect(() => setSucesso(empresa.indicadores.iset.flat().every(value => value > 0)), [empresa.indicadores]);
+    useEffect(() =>  setSucesso(empresa.indicadores.iest.flat().every(value => value > 0)), [empresa.indicadores]);
 
     const categorias: Categoria[] = [
         {
-            categoria: 'Estrutura e Natureza do Setor',
+            categoria: 'Forças de Porter',
             perguntas: [
-                { conteudo: 'O número de empresas no setor é grande?', inverso: true},
-                { conteudo: 'O setor está ganhando mercado externo?', inverso: false },
-                { conteudo: 'O setor é muito regulado?', inverso: true }
-            ]
-        },
-        {
-            categoria: 'Perspectivas de Demanda',
-            perguntas: [
-                { conteudo: 'O setor é de crescimento sustentável?', inverso: false },
-                { conteudo: 'Há demanda do setor em novos mercados?', inverso: false },
-            ]
-        },
-        {
-            categoria: 'Custos e Lucratividade do Setor',
-            perguntas: [
-                { conteudo: 'A lucratividade do setor pode ser prejudicada por intervenções políticas?', inverso: true }
+                { conteudo: 'Rivalidade entre as concorrentes' },
+                { conteudo: 'Ameaça de produtos substitutos' },
+                { conteudo: 'Ameaça de novos concorrentes' }
             ]
         }
     ];
 
     const [values, setValues] = useState<number[][]>(
-        empresa.indicadores.iset.length
-            ? empresa.indicadores.iset
+        empresa.indicadores.iest.length
+            ? empresa.indicadores.iest
             : Array.from(Array(categorias.length).keys())
                    .map((i): number[] => Array.from(Array(categorias[i].perguntas.length).keys()).map(_ => -1))
     );
 
-    useEffect(() => setEmpresa({ ...empresa, indicadores: { ...empresa.indicadores, iset: values } }), [values]);
+    useEffect(() => setEmpresa({ ...empresa, indicadores: { ...empresa.indicadores, iest: values } }), [values]);
 
     const perguntasTemplate = (pergunta: Pergunta, value: number[], i: number, j: number) => {
-        let respostas = [ 'Não', 'Improvável', 'Neutro', 'Provável', 'Sim' ];
-        const cores = [ 'bg-red-500', 'bg-yellow-500', 'bg-yellow-300', 'bg-lime-400', 'bg-green-500' ];
-
-        if (pergunta.inverso) {
-            respostas = respostas.reverse();
-        }
+        let respostas = [ 'Alta', 'Neutro', 'Baixa' ];
+        const cores = [ 'bg-red-500', 'bg-yellow-300', 'bg-green-500' ];
 
         const onClick = (index: number) => {
             values[i] = (value[j] = index, value);
@@ -73,7 +56,7 @@ export default function IndicadorSetorial({ empresa, setEmpresa, setSucesso }: {
                                     rounded-md text-wrap
                                     p-2 h-8
                                     ${cores[i]}
-                                    ${(value[j]-1 === i || value[j] === -1) ? 'opacity-100' : 'opacity-25'}
+                                    ${value[j] - 1 === i || value[j] === -1 ? 'opacity-100' : 'opacity-25'}
                                 `}
                                 onClick={() => onClick(i+1)}
                                 key={i}
@@ -89,7 +72,7 @@ export default function IndicadorSetorial({ empresa, setEmpresa, setSucesso }: {
     };
 
     const categoriasTemplate = (pergunta: { categoria: string, perguntas: Pergunta[] }, i: number) => {
-        let value = values[i];
+        const value = values[i];
         return (
             <section className='flex flex-col gap-1' key={i}>
                 <h1 className='font-bold'>{pergunta.categoria}</h1>
@@ -102,7 +85,7 @@ export default function IndicadorSetorial({ empresa, setEmpresa, setSucesso }: {
 
     return (
         <div className='flex flex-col gap-4'>
-            <p className='text-base'>Registre as informações acerca da atratividade do setor na qual a empresa está inserida.</p>
+            <p className='text-base'>Registre as informações acerca do posicionamento da empresa dentro do setor na qual ela atua.</p>
             {
                 categorias.map(categoriasTemplate)
             }

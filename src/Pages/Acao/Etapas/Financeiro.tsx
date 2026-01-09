@@ -5,7 +5,7 @@ import type { Categoria } from '../../../Entities/Categoria';
 import type { Pergunta } from '../../../Entities/Pergunta';
 import type { Empresa } from '../../../Entities/Empresa';
 
-export default function IndicadorFinanceiro({ empresa, setEmpresa, setSucesso }: {
+export default function Financeiro({ empresa, setEmpresa, setSucesso }: {
     empresa: Empresa,
     setEmpresa: React.Dispatch<React.SetStateAction<Empresa>>
     setSucesso: React.Dispatch<React.SetStateAction<boolean>>

@@ -1,45 +1,18 @@
 import { faBullhorn, faChartLine, faChessKnight, faIndustry, faWallet } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import Button from '../../Components/Button';
-import IndicadorEstrategico from './Indicadores/IndicadorEstrategico';
-import IndicadorFinanceiro from './Indicadores/IndicadorFinanceiro';
-import IndicadorGovernanca from './Indicadores/IndicadorGovernanca';
-import IndicadorSetorial from './Indicadores/IndicadorSetorial';
-import InputField from '../../Components/InputField';
+import Estrategico from './Etapas/Estrategico';
+import Financeiro from './Etapas/Financeiro';
+import Geral from './Etapas/Geral';
+import Governanca from './Etapas/Governanca';
+import Setorial from './Etapas/Setorial';
 import Steps from '../../Components/Steps';
-import { type Empresa } from '../../Entities/Empresa';
-import InputCurrency from '../../Components/InputCurrency';
-import Input from '../../Components/Input';
-
-import calcularViablidade from '../../Utils/calcularViabilidade';
+import type { Empresa } from '../../Entities/Empresa';
 import type { Pesos } from '../../Entities/Pesos';
 
-function DadosGerais({ empresa, setEmpresa, setSucesso }: {
-    empresa: Empresa,
-    setEmpresa: React.Dispatch<React.SetStateAction<Empresa>>
-    setSucesso: React.Dispatch<React.SetStateAction<boolean>>
-})
-{
-    const [cotacao, setCotacao] = useState<{ float: number, formatted: string, value: string }>(empresa.acao.cotacao);
-
-    useEffect(() => setEmpresa({ ...empresa, acao: { ...empresa.acao, cotacao } }), [cotacao]);
-    useEffect(() => setSucesso(empresa.nome.length > 0 && empresa.acao.ticker.length > 0 && empresa.acao.cotacao.float > 0), [empresa]);
-
-    const onChange = (ticker: string) => setEmpresa({ ...empresa, acao: { ...empresa.acao, ticker } });
-
-    return (
-        <div className='flex flex-col gap-4'>
-            <p className='text-base'>Registre as informações gerais da nova ação a ser cadastrada.</p>
-            <InputField title='Empresa' field='nome' value={empresa} setValue={setEmpresa} />
-            <section className='flex gap-4'>
-                <Input title='Ticker' value={empresa.acao.ticker} onChange={onChange} className='flex-1' />
-                <InputCurrency title='Cotação' value={cotacao} setValue={setCotacao} className='flex-1' />
-            </section>
-        </div>
-    );
-}
+import calcularViablidade from '../../Utils/calcularViabilidade';
 
 export default function CadastrarAcao()
 {
@@ -58,27 +31,27 @@ export default function CadastrarAcao()
         {
             label: 'Dados Gerais',
             icon: faWallet,
-            element: <DadosGerais empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Geral empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
         },
         {
             label: 'Dados Financeiros',
             icon: faChartLine,
-            element: <IndicadorFinanceiro empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Financeiro empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
         },
         {
             label: 'Dados do Setor',
             icon: faIndustry,
-            element: <IndicadorSetorial empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Setorial empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
         },
         {
             label: 'Dados de Estratégia',
             icon: faChessKnight,
-            element: <IndicadorEstrategico empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Estrategico empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
         },
         {
             label: 'Dados de Governança',
             icon: faBullhorn,
-            element: <IndicadorGovernanca empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Governanca empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
         },
     ];
 
@@ -90,6 +63,7 @@ export default function CadastrarAcao()
     };
 
     const onCancel = () => navigate('/');
+
     const onDelete = () => {
         empresas.splice(parseInt(params.id!), 1);
         localStorage.setItem('empresas', JSON.stringify(empresas));
