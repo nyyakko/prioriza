@@ -12,7 +12,7 @@ seja, um valor que represente o quão alinhado aquela empresa está de acordo co
 as expectativas do investidor. Quanto maior for o viés atribuído a ação, maior
 será sua participação dentro do aporte que o usuário realizar.
 
-## O Prioriza alguma garantia de retornos futuros?
+## O Prioriza garante retornos futuros?
 
 **Não**. O Prioriza meramente classifica as ações com base num critério de
 prioridade que _você_ mais considera pertinente de acordo com o seu perfil de
