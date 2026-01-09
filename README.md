@@ -18,7 +18,7 @@ será sua participação dentro do aporte que o usuário realizar.
 prioridade que _você_ mais considera pertinente de acordo com o seu perfil de
 investidor.
 
-### ... Então quando eu devo utilizar-lo?
+## Quando eu devo utilizar-lo?
 
 Quando você já tiver feito a análise das empresas que você está interessado em
 investir, pois daí você terá uma lista apurada das ações que mais se alinham
