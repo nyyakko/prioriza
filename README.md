@@ -14,7 +14,7 @@ será sua participação dentro do aporte que o usuário realizar.
 
 ## O Prioriza alguma garantia de retornos futuros?
 
-**Não**. Prioriza meramente classifica as ações com base num critério de
+**Não**. O Prioriza meramente classifica as ações com base num critério de
 prioridade que _você_ mais considera pertinente de acordo com o seu perfil de
 investidor.
 
