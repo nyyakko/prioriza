@@ -1,4 +1,4 @@
-export type Pesos = {
+export type Weights = {
     iest: number;
     iset: number;
     ifin: number;

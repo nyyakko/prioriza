@@ -3,70 +3,70 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import Button from '../../Components/Button';
-import Estrategico from './Etapas/Estrategico';
-import Financeiro from './Etapas/Financeiro';
-import Geral from './Etapas/Geral';
-import Governanca from './Etapas/Governanca';
-import Setorial from './Etapas/Setorial';
+import Estrategico from './Steps/Strategic';
+import Finantial from './Steps/Finantial';
+import General from './Steps/General';
+import Governance from './Steps/Governance';
+import Sectoral from './Steps/Sectoral';
 import Steps from '../../Components/Steps';
-import type { Empresa } from '../../Entities/Empresa';
-import type { Pesos } from '../../Entities/Pesos';
+import type { Company } from '../../Entities/Company';
+import type { Weights } from '../../Entities/Weights';
 
-import calcularViablidade from '../../Utils/calcularViabilidade';
+import calculateBias from '../../Utils/calculateBias';
 
-export default function CadastrarAcao()
+export default function EditStock()
 {
     const navigate = useNavigate();
     const params = useParams();
 
-    const pesos = JSON.parse(localStorage.getItem('pesos')!) as Pesos;
-    const empresas: Empresa[] = JSON.parse(localStorage.getItem('empresas')!) as Empresa[] || [];
-
-    const [success, setSucesso] = useState(false);
-    const [empresa, setEmpresa] = useState<Empresa>(empresas.at(parseInt(params.id!))!);
+    const weights = JSON.parse(localStorage.getItem('weights')!) as Weights;
+    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [company, setCompany] = useState<Company>(companies.at(parseInt(params.id!))!);
+
+    const [success, setSucess] = useState(false);
 
     const steps = [
         {
             label: 'Dados Gerais',
             icon: faWallet,
-            element: <Geral empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <General company={company} setCompany={setCompany} setSucess={setSucess} />
         },
         {
             label: 'Dados Financeiros',
             icon: faChartLine,
-            element: <Financeiro empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Finantial company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados do Setor',
             icon: faIndustry,
-            element: <Setorial empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Sectoral company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados de Estratégia',
             icon: faChessKnight,
-            element: <Estrategico empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Estrategico company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados de Governança',
             icon: faBullhorn,
-            element: <Governanca empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Governance company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
     ];
-
-    const onCreate = () => {
-        empresa.preferencia = calcularViablidade(empresa, pesos);
-        empresas[parseInt(params.id!)] = empresa;
-        localStorage.setItem('empresas', JSON.stringify(empresas));
-        navigate('/prioriza');
-    };
 
     const onCancel = () => navigate('/prioriza');
 
     const onDelete = () => {
-        empresas.splice(parseInt(params.id!), 1);
-        localStorage.setItem('empresas', JSON.stringify(empresas));
+        companies.splice(parseInt(params.id!), 1);
+        localStorage.setItem('companies', JSON.stringify(companies));
+        navigate('/prioriza');
+    };
+
+    const onSave = () => {
+        company.bias = calculateBias(company, weights);
+        companies[parseInt(params.id!)] = company;
+        localStorage.setItem('companies', JSON.stringify(companies));
         navigate('/prioriza');
     };
 
@@ -76,7 +76,7 @@ export default function CadastrarAcao()
                 <h1 className='text-accent dark:text-accent-dark font-bold text-xl'>Prioriza</h1>
             </section>
             <section className='w-[60%] 2xl:w-[50%] bg-background dark:bg-background-dark rounded-lg flex flex-col gap-4 p-4'>
-                <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Editar Ação - {empresa.nome}</h1>
+                <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Editar Ação - {company.name}</h1>
                 <section className='flex flex-col gap-4'>
                     <Steps items={steps} activeIndex={activeIndex} setActiveIndex={setActiveIndex} unlocked={true}/>
                 </section>
@@ -84,7 +84,7 @@ export default function CadastrarAcao()
                     <Button title='Cancelar' className='w-20 rounded-md px-4 py-3' onClick={onCancel} />
                     <section className='flex flex-row gap-2'>
                         <Button title='Deletar' className='w-30 rounded-md px-4 py-3' onClick={onDelete} disabled={!success} />
-                        <Button title='Salvar' className='w-40 rounded-md px-4 py-3' onClick={onCreate} disabled={!success} />
+                        <Button title='Salvar' className='w-40 rounded-md px-4 py-3' onClick={onSave} disabled={!success} />
                     </section>
                 </section>
             </section>

@@ -1,4 +1,4 @@
-export type Indicadores = {
+export type Indices = {
     ifin: number[][];
     iset: number[][];
     iest: number[][];

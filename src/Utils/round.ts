@@ -1,4 +1,4 @@
-export default function roundToXDigits(value: number, digits: number)
+export default function round(value: number, digits: number)
 {
     value = value * Math.pow(10, digits);
     value = Math.round(value);

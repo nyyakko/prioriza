@@ -3,71 +3,74 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import Button from '../../Components/Button';
-import Estrategico from './Etapas/Estrategico';
-import Financeiro from './Etapas/Financeiro';
-import Geral from './Etapas/Geral';
-import Governanca from './Etapas/Governanca';
-import Setorial from './Etapas/Setorial';
+import Estrategico from './Steps/Strategic';
+import Finantial from './Steps/Finantial';
+import General from './Steps/General';
+import Governance from './Steps/Governance';
+import Sectoral from './Steps/Sectoral';
 import Steps from '../../Components/Steps';
-import type { Empresa } from '../../Entities/Empresa';
-import type { Pesos } from '../../Entities/Pesos';
+import type { Company } from '../../Entities/Company';
+import type { Weights } from '../../Entities/Weights';
 
-import calcularViablidade from '../../Utils/calcularViabilidade';
+import calculateBias from '../../Utils/calculateBias';
 
-export default function CadastrarAcao()
+export default function RegisterStock()
 {
     const navigate = useNavigate();
 
-    const pesos = JSON.parse(localStorage.getItem('pesos')!) as Pesos;
-    const [success, setSucesso] = useState(false);
-    const [empresa, setEmpresa] = useState<Empresa>({
-        nome: '',
-        indicadores: { ifin: [], iset: [], iest: [], igov: [] },
-        preferencia: 0,
-        acao: {
+    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
+    const weights = JSON.parse(localStorage.getItem('weights')!) as Weights;
+
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [company, setCompany] = useState<Company>({
+        name: '',
+        indices: { ifin: [], iset: [], iest: [], igov: [] },
+        bias: 0,
+        stock: {
             ticker: '',
-            cotacao: { float: 0, formatted: '', value: '' }
+            price: { float: 0, formatted: '', value: '' }
         },
     });
 
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [success, setSucess] = useState(false);
 
     const steps = [
         {
             label: 'Dados Gerais',
             icon: faWallet,
-            element: <Geral empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <General company={company} setCompany={setCompany} setSucess={setSucess} />
         },
         {
             label: 'Dados Financeiros',
             icon: faChartLine,
-            element: <Financeiro empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Finantial company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados do Setor',
             icon: faIndustry,
-            element: <Setorial empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Sectoral company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados de Estratégia',
             icon: faChessKnight,
-            element: <Estrategico empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Estrategico company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
         {
             label: 'Dados de Governança',
             icon: faBullhorn,
-            element: <Governanca empresa={empresa} setEmpresa={setEmpresa} setSucesso={setSucesso} />
+            element: <Governance company={company} setCompany={setCompany} setSuccess={setSucess} />
         },
     ];
 
+    const onCancel = () => navigate('/prioriza');
+
     const onCreate = () => {
-        const empresas = JSON.parse(localStorage.getItem('empresas') ? localStorage.getItem('empresas')! : '[]') as Empresa[];
-        empresa.preferencia = calcularViablidade(empresa, pesos);
-        localStorage.setItem('empresas', JSON.stringify([ ...empresas, empresa ]));
+        company.bias = calculateBias(company, weights);
+        localStorage.setItem('companies', JSON.stringify([ ...companies, company ]));
         navigate('/prioriza');
     };
 
-    const onCancel = () => navigate('/prioriza');
+    const onNext = () => setActiveIndex(activeIndex+1);
 
     return (
         <div className='flex flex-col items-center py-4 gap-4 h-screen'>
@@ -86,7 +89,7 @@ export default function CadastrarAcao()
                         {
                             activeIndex === steps.length-1
                                 ? <Button title='Concluir' className='w-30 rounded-md px-4 py-3' onClick={onCreate} disabled={!success} />
-                                : <Button title='Próximo' className='w-30 rounded-md px-4 py-3' onClick={() => setActiveIndex(activeIndex+1)} disabled={!success} />
+                                : <Button title='Próximo' className='w-30 rounded-md px-4 py-3' onClick={onNext} disabled={!success} />
                         }
                     </section>
                 </section>

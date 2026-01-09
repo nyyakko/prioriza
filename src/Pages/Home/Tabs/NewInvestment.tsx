@@ -4,14 +4,14 @@ import { formatValue } from 'react-currency-input-field';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend, Title, type ChartData } from 'chart.js';
 
-import Button from './Components/Button';
-import InputCurrency from './Components/InputCurrency';
-import type { Empresa } from './Entities/Empresa';
-import Column from './Components/Column';
-import Table from './Components/Table';
+import Button from '../../../Components/Button';
+import Column from '../../../Components/Column';
+import InputCurrency from '../../../Components/InputCurrency';
+import Table from '../../../Components/Table';
+import type { Company } from '../../../Entities/Company';
 
-import calcularDistribuicaoDoAporte, { type Aporte } from './Utils/calcularAporte';
-import roundToXDigits from './Utils/round';
+import round from '../../../Utils/round';
+import calculateInvestment from '../../../Utils/calculateInvestment';
 
 Chart.register(ArcElement, Title, Tooltip, Legend);
 
@@ -34,7 +34,7 @@ const CHART_CENTER_TEXT_PLUGIN = Object.freeze({
         const text =
             data.datasets[0].data.length === 0 && total === 0
                 ? 'Informe o valor do aporte.'
-                : formatValue({ value: `${roundToXDigits(total as number, 2)}`, intlConfig: { locale: 'pt-BR', currency: 'BRL' } });
+                : formatValue({ value: `${round(total as number, 2)}`, intlConfig: { locale: 'pt-BR', currency: 'BRL' } });
 
         ctx.fillText(text, centerX, centerY);
 
@@ -59,32 +59,40 @@ const CHART_OPTIONS = Object.freeze({
     }
 });
 
-export default function NovoAporte()
-{
-    const empresas: Empresa[] = JSON.parse(localStorage.getItem('empresas')!) as Empresa[] || [];
+type Investment = {
+    company: string;
+    ticker: string;
+    total: number;
+    formattedTotal: string;
+    count: number;
+};
 
-    const [aporte, setAporte] = useState<{ float: number, formatted: string, value: string }>({ float: 0, formatted: '', value: '' });
-    const [distribuicao, setDistribuicao] = useState<Aporte[]>([]);
+export default function NewInvestment()
+{
+    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
+
+    const [investmentValue, setInvestmentValue] = useState<{ float: number, formatted: string, value: string }>({ float: 0, formatted: '', value: '' });
+    const [investments, setInvestments] = useState<Investment[]>([]);
 
     const chartRef = useRef(null);
 
-    const [data, setData] = useState<ChartData<"doughnut", number[], unknown>>({ labels: [], datasets: [{ data: [] }] });
+    const [data, setData] = useState<ChartData<'doughnut', number[], unknown>>({ labels: [], datasets: [{ data: [] }] });
 
     const onCalculate = () => {
-        if (!(aporte.float > 0)) {
+        if (!(investmentValue.float > 0)) {
             return;
         }
 
         let chart = chartRef.current as unknown as Chart;
 
-        const distribuicao = calcularDistribuicaoDoAporte(aporte.float, empresas);
-        setDistribuicao(distribuicao);
+        const investments = calculateInvestment(investmentValue.float, companies);
+        setInvestments(investments);
 
         setData({
-            labels: [...distribuicao.map(aporte => aporte.nome)],
+            labels: [...investments.map(investment => investment.company)],
             datasets: [{
                 label: 'Total (R$)',
-                data: [...distribuicao.map(result => result.total)],
+                data: [...investments.map(investment => investment.total)],
                 backgroundColor: [ '#3129d6', '#5b54de', '#847ee7', '#ada9ef', '#d6d4f7', '#eaeafb' ],
                 borderWidth: 2,
             }]
@@ -96,7 +104,7 @@ export default function NovoAporte()
     return (
         <div className='flex flex-col gap-4 pt-4'>
             <section className='flex flex-row gap-4'>
-                <InputCurrency value={aporte} setValue={setAporte} className='w-full' />
+                <InputCurrency value={investmentValue} setValue={setInvestmentValue} className='w-full' />
                 <Button title='Calcular' className='w-full rounded-md px-8 py-3' onClick={onCalculate} />
             </section>
             <section className='flex flex-col gap-4 rounded-md'>
@@ -111,11 +119,11 @@ export default function NovoAporte()
                 <section className='bg-background dark:bg-background-dark rounded-lg px-6 py-4 flex flex-1 flex-col border border-gray-200'>
                     <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Ações Recomendadas</h1>
                     <section className='flex flex-row flex-1 justify-between gap-4'>
-                        <Table data={distribuicao} onRowClick={() => {}} className='w-full max-h-70' >
-                            <Column field='nome' header='Empresa' />
+                        <Table data={investments} onRowClick={() => {}} className='w-full max-h-70' >
+                            <Column field='company' header='Empresa' />
                             <Column field='ticker' header='Ticker' />
-                            <Column field='totalFormatado' header='Total' />
-                            <Column field='quantidade' header='Qtd.' />
+                            <Column field='formattedTotal' header='Total' />
+                            <Column field='count' header='Quantidade' />
                         </Table>
                     </section>
                 </section>
