@@ -9,7 +9,7 @@ Basicamente o usuário deverá responder, no momento do cadastro de uma nova
 ação, um conjunto de perguntas a respeito da empresa dona da ação que ele está
 cadastrando. Partindo dessas respostas, o sistema irá atribuir um viés, ou
 seja, um valor que represente o quão alinhado aquela empresa está de acordo com
-as expectativas do investidor. Quanto maior for o viés atribuído a ação, maior
+o seu perfil de investidor. Quanto maior for o viés atribuído a ação, maior
 será sua participação dentro do aporte que o usuário realizar.
 
 ## O Prioriza garante retornos futuros?
@@ -18,7 +18,7 @@ será sua participação dentro do aporte que o usuário realizar.
 prioridade que _você_ mais considera pertinente de acordo com o seu perfil de
 investidor.
 
-## Quando eu devo utilizar-lo?
+## Quando eu devo utilizá-lo?
 
 Quando você já tiver feito a análise das empresas que você está interessado em
 investir, pois daí você terá uma lista apurada das ações que mais se alinham
