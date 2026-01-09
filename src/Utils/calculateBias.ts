@@ -1,5 +1,5 @@
-import type { Company } from '../Entities/Company';
-import type { Weights } from '../Entities/Weights';
+import type { Company } from '../Persistence/Entities/Company';
+import type { Weights } from '../Persistence/Entities/Weights';
 
 import round from './round';
 
