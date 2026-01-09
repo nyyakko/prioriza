@@ -70,7 +70,7 @@ export default function NovoAporte()
 
     const [data, setData] = useState<ChartData<"doughnut", number[], unknown>>({ labels: [], datasets: [{ data: [] }] });
 
-    const onCalcular = () => {
+    const onCalculate = () => {
         if (!(aporte.float > 0)) {
             return;
         }
@@ -97,7 +97,7 @@ export default function NovoAporte()
         <div className='flex flex-col gap-4 pt-4'>
             <section className='flex flex-row gap-4'>
                 <InputCurrency value={aporte} setValue={setAporte} className='w-full' />
-                <Button title='Calcular' className='w-full rounded-md px-8 py-3' onClick={onCalcular} />
+                <Button title='Calcular' className='w-full rounded-md px-8 py-3' onClick={onCalculate} />
             </section>
             <section className='flex flex-col gap-4 rounded-md'>
                 <section className='bg-background dark:bg-background-dark rounded-lg px-6 py-4 flex flex-col border border-gray-200'>
