@@ -18,16 +18,22 @@ type StepsProps = {
 export default function Steps(props: StepsProps)
 {
     const stepTemplate = (item: Step, i: number) => {
+        const onClick = () => {
+            if (props.unlocked != undefined) {
+                props.setActiveIndex(i);
+            }
+        };
+
         return (
             <div
                 className={`
                     flex flex-col
                     items-center
                     gap-2
-                    ${i !== props.activeIndex && props.unlocked ? 'hover:text-text cursor-pointer' : ''}
+                    ${i !== props.activeIndex && props.unlocked != undefined ? 'hover:text-text cursor-pointer' : ''}
                     z-2
                 `}
-                onClick={() => props.setActiveIndex(i)}
+                onClick={onClick}
                 key={i}
             >
                 <span
@@ -41,7 +47,7 @@ export default function Steps(props: StepsProps)
                         ${
                             i === props.activeIndex
                                 ? 'scale-110 bg-accent border-accent dark:bg-accent-dark dark:border-accent-dark text-white dark:text-text-dark'
-                                : 'bg-white dark:bg-black border-gray-100'
+                                : `bg-white dark:bg-black border-gray-100 ${props.unlocked == undefined ? 'text-gray-400' : ''}`
                         }
                     `}
                 >
