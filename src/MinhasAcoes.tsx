@@ -23,8 +23,8 @@ export default function MinhasAcoes()
             };
         });
 
-    const onCreate = () => navigate('/cadastrar');
-    const onEdit = (_: Acao, index: number) => navigate(`/${index}/editar`);
+    const onCreate = () => navigate('/prioriza/cadastrar');
+    const onEdit = (_: Acao, index: number) => navigate(`/prioriza/${index}/editar`);
 
     return (
         <section className='flex flex-col gap-4 pt-4'>

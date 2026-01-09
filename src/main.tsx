@@ -10,10 +10,10 @@ import EditarAcao from './Pages/Acao/EditarAcao';
 localStorage.setItem('pesos', JSON.stringify({ iest: 0.556, iset: 0.244, ifin: 0.155, igov: 0.043 }));
 
 const routes = [
-    { path: '/', element: <Prioriza /> },
+    { path: '/prioriza', element: <Prioriza /> },
 
-    { path: '/cadastrar', element: <CadastrarAcao /> },
-    { path: '/:id/editar', element: <EditarAcao /> },
+    { path: '/prioriza/cadastrar', element: <CadastrarAcao /> },
+    { path: '/prioriza/:id/editar', element: <EditarAcao /> },
 ];
 
 createRoot(document.getElementById('root')!).render(

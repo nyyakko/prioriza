@@ -59,15 +59,15 @@ export default function CadastrarAcao()
         empresa.preferencia = calcularViablidade(empresa, pesos);
         empresas[parseInt(params.id!)] = empresa;
         localStorage.setItem('empresas', JSON.stringify(empresas));
-        navigate('/');
+        navigate('/prioriza');
     };
 
-    const onCancel = () => navigate('/');
+    const onCancel = () => navigate('/prioriza');
 
     const onDelete = () => {
         empresas.splice(parseInt(params.id!), 1);
         localStorage.setItem('empresas', JSON.stringify(empresas));
-        navigate('/');
+        navigate('/prioriza');
     };
 
     return (

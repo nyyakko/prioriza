@@ -64,10 +64,10 @@ export default function CadastrarAcao()
         const empresas = JSON.parse(localStorage.getItem('empresas') ? localStorage.getItem('empresas')! : '[]') as Empresa[];
         empresa.preferencia = calcularViablidade(empresa, pesos);
         localStorage.setItem('empresas', JSON.stringify([ ...empresas, empresa ]));
-        navigate('/');
+        navigate('/prioriza');
     };
 
-    const onCancel = () => navigate('/');
+    const onCancel = () => navigate('/prioriza');
 
     return (
         <div className='flex flex-col items-center py-4 gap-4 h-screen'>
