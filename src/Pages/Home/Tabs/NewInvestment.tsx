@@ -60,18 +60,18 @@ const CHART_OPTIONS = Object.freeze({
 });
 
 type Investment = {
-    company: string;
-    ticker: string;
-    total: number;
-    formattedTotal: string;
-    count: number;
+    company: string,
+    ticker: string,
+    total: number,
+    formattedTotal: string,
+    count: number
 };
 
 export default function NewInvestment()
 {
     const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
 
-    const [investmentValue, setInvestmentValue] = useState<{ float: number, formatted: string, value: string }>({ float: 0, formatted: '', value: '' });
+    const [price, setPrice] = useState<{ float: number, formatted: string, value: string }>({ float: 0, formatted: '', value: '' });
     const [investments, setInvestments] = useState<Investment[]>([]);
 
     const chartRef = useRef(null);
@@ -79,13 +79,13 @@ export default function NewInvestment()
     const [data, setData] = useState<ChartData<'doughnut', number[], unknown>>({ labels: [], datasets: [{ data: [] }] });
 
     const onCalculate = () => {
-        if (!(investmentValue.float > 0)) {
+        if (!(price.float > 0)) {
             return;
         }
 
         let chart = chartRef.current as unknown as Chart;
 
-        const investments = calculateInvestment(investmentValue.float, companies);
+        const investments = calculateInvestment(price.float, companies);
         setInvestments(investments);
 
         setData({
@@ -104,7 +104,7 @@ export default function NewInvestment()
     return (
         <div className='flex flex-col gap-4 pt-4'>
             <section className='flex flex-row gap-4'>
-                <InputCurrency value={investmentValue} setValue={setInvestmentValue} className='w-full' />
+                <InputCurrency value={price} setValue={setPrice} className='w-full' />
                 <Button title='Calcular' className='w-full rounded-md px-8 py-3' onClick={onCalculate} />
             </section>
             <section className='flex flex-col gap-4 rounded-md'>
