@@ -18,7 +18,8 @@ export default function Estrategico({ empresa, setEmpresa, setSucesso }: {
             perguntas: [
                 { conteudo: 'Rivalidade entre as concorrentes' },
                 { conteudo: 'Ameaça de produtos substitutos' },
-                { conteudo: 'Ameaça de novos concorrentes' }
+                { conteudo: 'Ameaça de novos concorrentes' },
+                { conteudo: 'Poder de barganha dos clientes' }
             ]
         }
     ];
