@@ -98,6 +98,9 @@ export default function CadastrarAcao()
 
     return (
         <div className='flex flex-col items-center py-4 gap-4 h-screen'>
+            <section className='w-[60%] 2xl:w-[50%] bg-background dark:bg-background-dark rounded-lg px-6 py-4 flex justify-center'>
+                <h1 className='text-accent dark:text-accent-dark font-bold text-xl'>Prioriza</h1>
+            </section>
             <section className='w-[60%] 2xl:w-[50%] bg-background dark:bg-background-dark rounded-lg flex flex-col gap-4 p-4'>
                 <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Editar Ação</h1>
                 <section className='flex flex-col gap-4'>
