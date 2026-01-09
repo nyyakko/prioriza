@@ -76,7 +76,7 @@ export default function CadastrarAcao()
                 <h1 className='text-accent dark:text-accent-dark font-bold text-xl'>Prioriza</h1>
             </section>
             <section className='w-[60%] 2xl:w-[50%] bg-background dark:bg-background-dark rounded-lg flex flex-col gap-4 p-4'>
-                <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Editar Ação</h1>
+                <h1 className='text-accent dark:text-accent-dark font-bold text-xl pb-4'>Editar Ação - {empresa.nome}</h1>
                 <section className='flex flex-col gap-4'>
                     <Steps items={steps} activeIndex={activeIndex} setActiveIndex={setActiveIndex} unlocked={true}/>
                 </section>
