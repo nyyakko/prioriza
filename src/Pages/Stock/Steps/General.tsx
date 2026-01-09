@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import InputCurrency from '../../../Components/InputCurrency';
 import InputField from '../../../Components/InputField';
 import Input from '../../../Components/Input';
-import type { Company } from '../../../Entities/Company';
+import type { Company } from '../../../Persistence/Entities/Company';
 
 export default function General({ company, setCompany, setSucess }: {
     company: Company,
@@ -13,7 +13,7 @@ export default function General({ company, setCompany, setSucess }: {
 {
     const [price, setPrice] = useState<{ float: number, formatted: string, value: string }>(company.stock.price);
 
-    useEffect(() => setCompany({ ...company, stock: { ...company.stock, price: price } }), [price]);
+    useEffect(() => setCompany({ ...company, stock: { ...company.stock, price } }), [price]);
     useEffect(() => setSucess(company.name.length > 0 && company.stock.ticker.length > 0 && company.stock.price.float > 0), [company]);
 
     const onChange = (ticker: string) => setCompany({ ...company, stock: { ...company.stock, ticker } });

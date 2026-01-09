@@ -1,14 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatValue } from 'react-currency-input-field';
 
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend, Title, type ChartData } from 'chart.js';
 
 import Button from '../../../Components/Button';
-import Column from '../../../Components/Column';
 import InputCurrency from '../../../Components/InputCurrency';
-import Table from '../../../Components/Table';
-import type { Company } from '../../../Entities/Company';
+import { Table, Column } from '../../../Components/Table';
+import type { Company } from '../../../Persistence/Entities/Company';
+
+import * as CompanyRepository from '../../../Repositories/Company/CompanyRepository';
 
 import round from '../../../Utils/round';
 import calculateInvestment from '../../../Utils/calculateInvestment';
@@ -69,7 +70,11 @@ type Investment = {
 
 export default function NewInvestment()
 {
-    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
+    const [companies, setCompanies] = useState<Company[]>([]);
+
+    useEffect(() => {
+        CompanyRepository.getAll().then(setCompanies);
+    }, [companies]);
 
     const [price, setPrice] = useState<{ float: number, formatted: string, value: string }>({ float: 0, formatted: '', value: '' });
     const [investments, setInvestments] = useState<Investment[]>([]);

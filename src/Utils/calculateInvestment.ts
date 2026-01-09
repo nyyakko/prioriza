@@ -1,8 +1,8 @@
 import { formatValue } from 'react-currency-input-field';
 
-import round from './round';
+import type { Company } from '../Persistence/Entities/Company';
 
-import type { Company } from '../Entities/Company';
+import round from './round';
 
 export default function calculateInvestment(investment: number, companies: Company[])
 {

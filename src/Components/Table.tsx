@@ -1,4 +1,5 @@
 import React, { type  ReactNode } from 'react';
+import { resolveProperty } from '../Utils/resolveProperty';
 
 type TableProps<T> = {
     data: T[];
@@ -7,7 +8,7 @@ type TableProps<T> = {
     className?: string;
 };
 
-export default function Table<T>(props: TableProps<T>)
+export function Table<T>(props: TableProps<T>)
 {
     const columns =
         React.Children.toArray(props.children)
@@ -35,7 +36,7 @@ export default function Table<T>(props: TableProps<T>)
                             >
                                 {
                                     columns.map((column, j) => {
-                                        const value = data[column?.field! as keyof T];
+                                        const value = resolveProperty(data, column?.field!);
                                         return <td className='p-3 text-text/80 dark:text-text-dark text-md' key={j}>{value as string}</td>
                                     })
                                 }
@@ -46,5 +47,17 @@ export default function Table<T>(props: TableProps<T>)
                 </tbody>
             </table>
         </section>
+    );
+}
+
+type ColumnProps = {
+    field: string;
+    header: string;
+};
+
+export function Column(props: ColumnProps)
+{
+    return (
+        <th className='sticky top-0 p-3 bg-gray-200 text-text/80 font-bold text-sm text-start'>{props.header}</th>
     );
 }

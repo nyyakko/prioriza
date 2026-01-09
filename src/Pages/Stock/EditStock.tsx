@@ -1,5 +1,5 @@
 import { faBullhorn, faChartLine, faChessKnight, faIndustry, faWallet } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import Button from '../../Components/Button';
@@ -9,8 +9,10 @@ import General from './Steps/General';
 import Governance from './Steps/Governance';
 import Sectoral from './Steps/Sectoral';
 import Steps from '../../Components/Steps';
-import type { Company } from '../../Entities/Company';
-import type { Weights } from '../../Entities/Weights';
+import type { Company } from '../../Persistence/Entities/Company';
+import type { Weights } from '../../Persistence/Entities/Weights';
+
+import * as CompanyRepository from '../../Repositories/Company/CompanyRepository';
 
 import calculateBias from '../../Utils/calculateBias';
 
@@ -20,10 +22,21 @@ export default function EditStock()
     const params = useParams();
 
     const weights = JSON.parse(localStorage.getItem('weights')!) as Weights;
-    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
 
     const [activeIndex, setActiveIndex] = useState(0);
-    const [company, setCompany] = useState<Company>(companies.at(parseInt(params.id!))!);
+    const [company, setCompany] = useState<Company>({
+        name: '',
+        indices: { ifin: [], iset: [], iest: [], igov: [] },
+        bias: 0,
+        stock: {
+            ticker: '',
+            price: { float: 0, formatted: '', value: '' }
+        },
+    });
+
+    useEffect(() => {
+        CompanyRepository.getById(parseInt(params.id!)!).then(setCompany);
+    }, []);
 
     const [success, setSucess] = useState(false);
 
@@ -57,16 +70,14 @@ export default function EditStock()
 
     const onCancel = () => navigate('/prioriza');
 
-    const onDelete = () => {
-        companies.splice(parseInt(params.id!), 1);
-        localStorage.setItem('companies', JSON.stringify(companies));
+    const onDelete = async () => {
+        await CompanyRepository.remove(parseInt(params.id!));
         navigate('/prioriza');
     };
 
-    const onSave = () => {
+    const onSave = async () => {
         company.bias = calculateBias(company, weights);
-        companies[parseInt(params.id!)] = company;
-        localStorage.setItem('companies', JSON.stringify(companies));
+        await CompanyRepository.update(company);
         navigate('/prioriza');
     };
 

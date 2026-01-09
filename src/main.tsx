@@ -1,6 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
+import './Persistence/Database';
+import './Persistence/Migration';
+
 import Home from './Pages/Home/Home';
 import RegisterStock from './Pages/Stock/RegisterStock';
 import EditStock from './Pages/Stock/EditStock';

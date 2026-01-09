@@ -9,8 +9,10 @@ import General from './Steps/General';
 import Governance from './Steps/Governance';
 import Sectoral from './Steps/Sectoral';
 import Steps from '../../Components/Steps';
-import type { Company } from '../../Entities/Company';
-import type { Weights } from '../../Entities/Weights';
+import type { Company } from '../../Persistence/Entities/Company';
+import type { Weights } from '../../Persistence/Entities/Weights';
+
+import * as CompanyRepository from '../../Repositories/Company/CompanyRepository';
 
 import calculateBias from '../../Utils/calculateBias';
 
@@ -18,7 +20,6 @@ export default function RegisterStock()
 {
     const navigate = useNavigate();
 
-    const companies = JSON.parse(localStorage.getItem('companies')!) as Company[] || [];
     const weights = JSON.parse(localStorage.getItem('weights')!) as Weights;
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -64,9 +65,9 @@ export default function RegisterStock()
 
     const onCancel = () => navigate('/prioriza');
 
-    const onCreate = () => {
+    const onCreate = async () => {
         company.bias = calculateBias(company, weights);
-        localStorage.setItem('companies', JSON.stringify([ ...companies, company ]));
+        await CompanyRepository.create(company);
         navigate('/prioriza');
     };
 

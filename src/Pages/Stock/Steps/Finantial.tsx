@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import Checkbox from '../../../Components/Checkbox';
-import type { Company } from '../../../Entities/Company';
-import type { Assessment } from '../../../Entities/Assessment';
+import type { Company } from '../../../Persistence/Entities/Company';
+import type { Assessment } from '../../../Persistence/Entities/Assessment';
 
 const ASSESSMENTS: Assessment[] = [
     {
