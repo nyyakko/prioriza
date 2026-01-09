@@ -120,7 +120,6 @@ export default function NovoAporte()
                     </section>
                 </section>
             </section>
-            <Button title='Salvar' className='w-full rounded-md px-8 py-3' />
         </div>
     );
 }
