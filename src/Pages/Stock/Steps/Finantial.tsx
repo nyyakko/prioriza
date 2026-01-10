@@ -74,7 +74,7 @@ export default function Finantial({ company, setCompany, setSuccess }: {
 
     return (
         <div className='flex flex-col gap-4'>
-            <p className='text-base'>Registre as informações acerca do desempenho financeiro passado da company.</p>
+            <p className='text-base'>Registre as informações acerca do desempenho financeiro passado da empresa.</p>
             {
                 ASSESSMENTS.map(assessmentTemplate)
             }

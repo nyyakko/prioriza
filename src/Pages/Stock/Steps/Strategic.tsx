@@ -89,7 +89,7 @@ export default function Strategic({ company, setCompany, setSuccess }: {
 
     return (
         <div className='flex flex-col gap-4'>
-            <p className='text-base'>Registre as informações acerca do posicionamento da company dentro do setor na qual ela atua.</p>
+            <p className='text-base'>Registre as informações acerca do posicionamento da empresa dentro do setor na qual ela atua.</p>
             {
                 ASSESSMENTS.map(assessmentTemplate)
             }

@@ -105,7 +105,7 @@ export default function Sectoral({ company, setCompany, setSuccess }: {
 
     return (
         <div className='flex flex-col gap-4'>
-            <p className='text-base'>Registre as informações acerca da atratividade do setor na qual a company está inserida.</p>
+            <p className='text-base'>Registre as informações acerca da atratividade do setor na qual a empresa está inserida.</p>
             {
                 ASSESSMENTS.map(assessmentTemplate)
             }
